@@ -25,7 +25,7 @@ test_web_vignettes <- function() {
   bad_links <- bad_links[2:length(bad_links)] 
   
   
-  return(data.frame(bad_articles))
+  return(data.frame(bad_articles,bad_links))
   
 
   
