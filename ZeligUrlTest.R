@@ -31,7 +31,9 @@ test_web_vignettes <- function() {
 #' @return Vector of urls
 #'
 get_links <- function(html_doc) {
-  
-  
+  doc <- read_html(html_doc)
+  links <- html_attr(html_nodes(doc, "a"))
+  links <- links[!links %in% "#"]
+  return(links)
 }
 
