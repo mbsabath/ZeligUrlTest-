@@ -3,24 +3,31 @@ library(xml2, rvest)
 test_web_vignettes <- function() {
   ## Assumes that the current working directory is Zelig package top directory
 
-  
+  bad_articles <- "" ## Hacky declare to allow for later append
+  bad_links <- ""
   setwd("docs")
   setwd("articles")
   articles <- list.files(pattern = "html")
   for (article in articles) {
     links <- get_links(article)
     for (link in links) {
-      ## do test on link
-      ## if link broken, add article and link to the dataframe storing them
-      
+     if (bad_link(link)) {
+       bad_articles <- c(bad_articles, article)
+       bad_links <- c(bad_links, link)
+     }
     }
-  }
+   }
   
   ## Clean Up Code
   setwd("..")
   setwd("..")
+  bad_articles <- bad_articles[2:length(bad_articles)] ## Clean up earlier hack
+  bad_links <- bad_links[2:length(bad_links)] 
   
-  ## Return dataframe of broken links
+  
+  return(data.frame(bad_articles))
+  
+
   
 }
 
