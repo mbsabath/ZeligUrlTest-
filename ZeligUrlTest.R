@@ -32,8 +32,22 @@ test_web_vignettes <- function() {
 #'
 get_links <- function(html_doc) {
   doc <- read_html(html_doc)
-  links <- html_attr(html_nodes(doc, "a"))
-  links <- links[!links %in% "#"]
+  links <- html_attr(html_nodes(doc, "a"), "href")
+  links <- clean_links(links)
   return(links)
 }
 
+clean_links <- function(links) {
+  link_head <- "http://docs.zeligproject.org"
+  article_head <- "http://docs.zeligproject.org/articles/"
+  ## Remove internal page tags
+  links <- links[substr(links,1,1) != "#"]
+  ## append website to links to other directories
+  dotdots <- substr(links,1,2) == ".."
+  links[dotdots] <- paste(link_head,substring(links[dotdots],3),sep="")
+  ## append article lead to remaining
+  not_http <- substr(links,1,4) != "http"
+  links[not_http] <- paste(article_head,links[not_http],sep="")
+  
+  return(links)
+}
