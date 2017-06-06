@@ -1,4 +1,6 @@
-library(xml2, rvest)
+library(xml2)
+library(rvest)
+library(httr)
 
 test_web_vignettes <- function() {
   ## Assumes that the current working directory is Zelig package top directory
@@ -57,4 +59,9 @@ clean_links <- function(links) {
   links[not_http] <- paste(article_head,links[not_http],sep="")
   
   return(links)
+}
+
+bad_link <- function(link) {
+  pg <- GET(link)
+  return(pg$status != 200)
 }
